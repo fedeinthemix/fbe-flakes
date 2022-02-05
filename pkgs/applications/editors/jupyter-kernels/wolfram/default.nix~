@@ -1,0 +1,59 @@
+{ lib
+, stdenv
+, callPackage
+, fetchFromGitHub
+, fetchurl
+, runCommand
+, makeWrapper
+, imagemagick
+, python3
+, wolfram-engine
+}:
+
+# To test:
+# $(nix-build -E 'with import <nixpkgs> {}; jupyter.override { definitions = { wolfram = wolfram-for-jupyter-kernel.definition; }; }')/bin/jupyter-notebook
+
+let
+  kernel = callPackage ./kernel.nix {};
+in
+
+rec {
+  launcher = runCommand "wolfram-for-jupyter-kernel-launcher" {
+    inherit wolfram-engine;
+    python = python3.withPackages (ps: [ ps.traitlets ps.jupyter_core ps.ipykernel ps.metakernel ]);
+    buildInputs = [ makeWrapper ];
+  } ''
+    mkdir -p $out/bin
+
+    makeWrapper $python/bin/python $out/bin/wolfram-for-jupyter-kernel \
+      --add-flags "-m octave_kernel" \
+      --suffix PATH : ''${wolfram-engine}/bin
+  '';
+
+  sizedLogo = size: stdenv.mkDerivation {
+    name = ''wolfram-logo-${wolfram-engine.version}-${size}x${size}.png'';
+
+    src = wolfram-engine.src;
+
+    buildInputs = [ imagemagick ];
+
+    dontConfigure = true;
+    dontInstall = true;
+
+    buildPhase = ''
+      cp ./share/icons/hicolor/${size}x${size}/apps/wolfram-wolframlanguage.png $out/logo.png
+    '';
+  };
+
+  definition = {
+    displayName = "Wolfram Language";
+    argv = [
+      "${launcher}/bin/wolfram-for-jupyter-kernel"
+      "-f"
+      "{connection_file}"
+    ];
+    language = "Wolfram Language ${wolfram-engine.version}";
+    logo32 = sizedLogo "32";
+    logo64 = sizedLogo "64";
+  };
+}
