@@ -42,7 +42,7 @@ stdenv.mkDerivation rec {
     (fetchgit {
       url = "https://github.com/Xyce/Xyce.git";
       rev = "82f96bbe05bac5921cd6fa1e8bb6a2983a797bf8";
-      sha256 = "sha256-QyAEFQBmgnNH7efI8nGFDgQ703hA5mx/qcdtXrT82bk=";
+      sha256 = "sha256-sOHjQEo4FqlDseTtxFVdLa0SI/VAf2OkwQV7QSL7SNM=";
     })
     (fetchurl {
       url = "https://github.com/Xyce/Xyce_Regression/archive/refs/tags/Release-${version}.tar.gz";
