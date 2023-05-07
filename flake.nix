@@ -2,7 +2,10 @@
   description = "Some packages not yet available in nixpkgs";
 
   inputs = {
-    nixpkgs.url = github:NixOS/nixpkgs/nixos-21.11;
+    # nixpkgs.url = github:NixOS/nixpkgs/nixos-21.11;
+    # use the same revision as the one on my NixOS system found with
+    # nixos-version --hash
+    nixpkgs.url = github:NixOS/nixpkgs/f6ddd55d5f9d5eca08df138c248008c1ba73ecec;
     flake-utils.url = github:numtide/flake-utils;
   };
 
