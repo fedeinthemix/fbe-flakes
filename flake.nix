@@ -3,9 +3,10 @@
 
   inputs = {
     # nixpkgs.url = github:NixOS/nixpkgs/nixos-21.11;
+    nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
     # use the same revision as the one on my NixOS system found with
     # nixos-version --hash
-    nixpkgs.url = github:NixOS/nixpkgs/15b75800dce80225b44f067c9012b09de37dfad2;
+    # nixpkgs.url = github:NixOS/nixpkgs/15b75800dce80225b44f067c9012b09de37dfad2;
   };
 
   outputs = { self, nixpkgs }:
