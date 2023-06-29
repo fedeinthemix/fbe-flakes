@@ -16,11 +16,29 @@
       pkgs = forAllSystems (system: nixpkgs.legacyPackages.${system});
     in
     {
-      packages = forAllSystems (system: {
+      packages = forAllSystems (system: rec {
 
         scmutils =
           pkgs.${system}.callPackage ./pkgs/development/modules/mit-scheme-modules/scmutils { };
 
+        # Julia
+        wrapJulia = julia:
+          pkgs.${system}.callPackage ./pkgs/development/compilers/julia/build-fhs-env.nix { inherit julia; };
+
+        julia-lts = julia_16-bin;
+        julia-stable = julia_19;
+        julia = julia-stable;
+        julia-lts-bin = julia_16-bin;
+        julia-stable-bin = julia_19-bin;
+        julia-bin = julia-stable-bin;
+
+        julia_16-bin =  wrapJulia pkgs.${system}.julia_16-bin;
+        julia_18-bin = wrapJulia pkgs.${system}.julia_18-bin;
+        julia_19-bin = wrapJulia pkgs.${system}.julia_19-bin;
+
+        julia_18 = wrapJulia pkgs.${system}.julia_18;
+        julia_19 = wrapJulia pkgs.${system}.julia_19;
+        
       });
     };
 
