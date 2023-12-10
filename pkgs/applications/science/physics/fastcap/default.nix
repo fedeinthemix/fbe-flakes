@@ -68,11 +68,12 @@ stdenv.mkDerivation rec {
     mkdir -p $out/bin
     cp -r bin/* $out/bin/
     rm $out/bin/README
-    mkdir -p $out/share/doc/${pname}-${version}/examples
-    cp -r examples/* $out/share/doc/${pname}-${version}/examples
+    mkdir -p $out/share/doc/${pname}-${version}
     for f in doc/*.pdf ; do
       cp $f $out/share/doc/${pname}-${version}
     done
+    mkdir -p $out/share/${pname}-${version}/examples
+    cp -r examples/* $out/share/${pname}-${version}/examples
   '';
 
   meta = with lib; {

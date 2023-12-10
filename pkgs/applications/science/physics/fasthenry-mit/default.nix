@@ -42,8 +42,8 @@ stdenv.mkDerivation rec {
     cp -r bin/* $out/bin/
     mkdir -p $out/share/doc/${pname}-${version}
     cp -r doc/* $out/share/doc/${pname}-${version}
-    mkdir -p $out/share/doc/${pname}-${version}/examples
-    cp -r examples/* $out/share/doc/${pname}-${version}/examples
+    mkdir -p $out/share/${pname}-${version}/examples
+    cp -r examples/* $out/share/${pname}-${version}/examples
   '';
 
   meta = with lib; {
