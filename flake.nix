@@ -20,20 +20,18 @@
     {
       packages = forAllSystems (system: rec {
 
-        fasthenry-mit =
-          pkgs.${system}.callPackage ./pkgs/applications/science/physics/fasthenry-mit { };
+        fasthenry-mit = pkgs.${system}.callPackage ./pkgs/applications/science/physics/fasthenry-mit { };
 
-        fasthenry =
-          pkgs.${system}.callPackage ./pkgs/applications/science/physics/fasthenry { };
+        fasthenry = pkgs.${system}.callPackage ./pkgs/applications/science/physics/fasthenry { };
 
-        fastcap =
-          pkgs.${system}.callPackage ./pkgs/applications/science/physics/fastcap {
+        fastcap = pkgs.${system}.callPackage ./pkgs/applications/science/physics/fastcap {
             texlive = pkgs.${system}.texlive.combine { inherit (pkgs.${system}.texlive) scheme-medium; };
           };
 
-        scmutils =
-          pkgs.${system}.callPackage ./pkgs/development/modules/mit-scheme-modules/scmutils { };
+        scmutils = pkgs.${system}.callPackage ./pkgs/development/modules/mit-scheme-modules/scmutils { };
 
+        xschem = pkgs.${system}.callPackage ./pkgs/applications/science/electronics/xschem { };
+        
         # Julia
         julia-lts = julia_16-bin;
         julia-stable = julia_19;
