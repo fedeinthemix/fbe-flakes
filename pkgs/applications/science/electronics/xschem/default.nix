@@ -19,8 +19,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "StefanSchippers";
     repo = "xschem";
-    rev = "3976918";
-    sha256 = "0kd99zxmggywf6nb8m8mj4drra4ybini0a1fgc2375q9c8r2fyry";
+    rev = "13b9221";
+    sha256 = "sha256-wtK+yTacaCuGWPjCdW+Y0CZkLPaHylDgLpkxJZvBgzw=";
   };
 
   nativeBuildInputs = [ bison flex pkg-config ];
