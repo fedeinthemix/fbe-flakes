@@ -1,0 +1,23 @@
+--- sky130/custom/scripts/inc_verilog.py.orig	2024-10-11 14:30:11.449673634 +0200
++++ sky130/custom/scripts/inc_verilog.py	2024-10-11 14:32:09.431091407 +0200
+@@ -13,6 +13,12 @@
+ import re
+ import os
+ import sys
++import stat
++
++def makeuserwritable(filepath):
++    if os.path.exists(filepath):
++        st = os.stat(filepath)
++        os.chmod(filepath, st.st_mode | stat.S_IWUSR)
+ 
+ def filter(inname, outname):
+ 
+@@ -103,6 +109,7 @@
+             else:
+                 os.unlink(outname)
+         try:
++            makeuserwritable(outname)
+             with open(outname, 'w') as outFile:
+                 for i in fixedlines:
+                     print(i, file=outFile)

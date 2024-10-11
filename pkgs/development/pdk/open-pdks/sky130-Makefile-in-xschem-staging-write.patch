@@ -1,0 +1,10 @@
+--- sky130/Makefile.in.orig	2024-10-11 11:26:49.779693976 +0200
++++ sky130/Makefile.in	2024-10-11 11:35:32.996227033 +0200
+@@ -1257,6 +1257,7 @@
+ 	# then remove the larger of the two example directories 
+ 	if test "x${XSCHEM_PATH}" != "x" ; then \
+ 		cp -rp ${XSCHEM_PATH}/* ${XSCHEM_STAGING_$*} ; \
++		chmod -R u+w ${XSCHEM_STAGING_$*}; \
+ 		rm -rf ${XSCHEM_STAGING_$*}/decred_hash_macro ; \
+ 	fi
+ 	# xschem setup is for sky130A.  Fix for the given target variant.
