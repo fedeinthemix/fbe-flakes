@@ -27,14 +27,14 @@
             texlive = pkgs.${system}.texlive.combine { inherit (pkgs.${system}.texlive) scheme-medium; };
           };
 
-        open-pdks = pkgs.${system}.callPackage ./pkgs/development/pdk/open-pdks
+        scmutils = pkgs.${system}.callPackage ./pkgs/development/modules/mit-scheme-modules/scmutils { };
+
+        sky130a = pkgs.${system}.callPackage ./pkgs/development/pdk/open-pdks
           { inherit skywater-pdk-libs-sky130_fd_pr
             skywater-pdk-libs-sky130_fd_sc_hd
             sky130-klayout-pdk
             xschem-sky130
             sky130-pschulz-xx-hd; };
-
-        scmutils = pkgs.${system}.callPackage ./pkgs/development/modules/mit-scheme-modules/scmutils { };
 
         skywater-pdk-libs-sky130_fd_pr = pkgs.${system}.callPackage
           (import ./pkgs/development/pdk/sky130/sky130-lib-gen.nix
@@ -59,6 +59,26 @@
         xschem = pkgs.${system}.callPackage ./pkgs/applications/science/electronics/xschem { };
 
         xschem-sky130 = pkgs.${system}.callPackage ./pkgs/development/pdk/xschem-sky130 { };
+      });
+
+      devShells = forAllSystems (system: rec {
+        sky130a = pkgs.${system}.mkShell {
+          packages = [
+            self.packages.${system}.sky130a
+            pkgs.${system}.xschem
+            pkgs.${system}.ngspice
+            pkgs.${system}.xyce
+            pkgs.${system}.verilog
+            pkgs.${system}.magic-vlsi
+            pkgs.${system}.klayout
+            pkgs.${system}.gaw
+            pkgs.${system}.verilator
+          ];
+          shellHook = ''
+            export PDK_ROOT="${self.packages.${system}.sky130a}/share/pdk"
+            export PDK="sky130A"
+          '';
+        };
       });
     };
 }

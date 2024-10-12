@@ -5,16 +5,26 @@
 , bash
 , git
 , magic-vlsi
+, mpw_precheck ? { pname = "mpw_precheck";}
+, pdk ? "sky130"
 , python3
-#, sky130a
-, skywater-pdk-libs-sky130_fd_pr
-, skywater-pdk-libs-sky130_fd_sc_hd
 , sky130-variants ? "A"
-, sky130-klayout-pdk
-, sky130-pschulz-xx-hd
+, sky130_sram_macros ? { pname = "sky130_sram_macros";}
+, sky130_fd_bd_sram ? { pname = "sky130_fd_bd_sram";}
+, sky130-pschulz-xx-hd ? { pname = "sky130-pschulz-xx-hd";}
+, sky130-klayout-pdk ? { pname = "sky130-klayout-pdk";}
+, skywater-pdk-libs-sky130_fd_pr
+, skywater-pdk-libs-sky130_fd_io ? { pname = "skywater-pdk-libs-sky130_fd_io";}
+, skywater-pdk-libs-sky130_fd_sc_hs ? { pname = "skywater-pdk-libs-sky130_fd_sc_hs";}
+, skywater-pdk-libs-sky130_fd_sc_ms ? { pname = "skywater-pdk-libs-sky130_fd_sc_ms";}
+, skywater-pdk-libs-sky130_fd_sc_ls ? { pname = "skywater-pdk-libs-sky130_fd_sc_ls";}
+, skywater-pdk-libs-sky130_fd_sc_lp ? { pname = "skywater-pdk-libs-sky130_fd_sc_lp";}
+, skywater-pdk-libs-sky130_fd_sc_hd ? { pname = "skywater-pdk-libs-sky130_fd_sc_hd";}
+, skywater-pdk-libs-sky130_fd_sc_hdll ? { pname = "skywater-pdk-libs-sky130_fd_sc_hdll";}
+, skywater-pdk-libs-sky130_fd_sc_hvl ? { pname = "skywater-pdk-libs-sky130_fd_sc_hvl";}
 , tcsh
 , tk
-, xschem-sky130
+, xschem-sky130 ? { pname = "xschem-sky130";}
 }:
 
 let python = python3.withPackages (ps: [
@@ -25,6 +35,34 @@ let python = python3.withPackages (ps: [
       # scripts/cace.py 
       ps.matplotlib
     ]);
+    sc-map = {
+      "sky130_sram_macros" = "sram-sky130";
+      "sky130_fd_bd_sram" = "sram-space-sky130";
+      "skywater-pdk-libs-sky130_fd_io" = "io-sky130";
+      "skywater-pdk-libs-sky130_fd_sc_hs" = "sc-hs-sky130";
+      "skywater-pdk-libs-sky130_fd_sc_ms" = "sc-ms-sky130";
+      "skywater-pdk-libs-sky130_fd_sc_ls" = "sc-ls-sky130";
+      "skywater-pdk-libs-sky130_fd_sc_lp" = "sc-lp-sky130";
+      "skywater-pdk-libs-sky130_fd_sc_hd" = "sc-hd-sky130";
+      "skywater-pdk-libs-sky130_fd_sc_hdll" = "sc-hdll-sky130";
+      "skywater-pdk-libs-sky130_fd_sc_hvl" = "sc-hvl-sky130";
+      "sky130-pschulz-xx-hd" = "alpha-sky130";
+      "xschem-sky130" = "xschem-sky130";
+      "sky130-klayout-pdk" = "klayout-sky130";
+      "mpw_precheck" = "precheck-sky130";
+    };
+    maybeEnable = (drv:
+      if (lib.isDerivation drv)
+      then "--enable-${sc-map.${drv.pname}}=${drv}/share/pdk/${drv.pname}/source"
+      else "--disable-${sc-map.${drv.pname}}");
+    selectPDK = (pdk:
+      if pdk == "gf180mcu"
+      then [ "--enable-gf180mcu-pdk" ]
+      else [
+        "--enable-sky130-pdk"
+        "--with-sky130-variants=${sky130-variants}"
+        "--enable-primitive-sky130=${skywater-pdk-libs-sky130_fd_pr}/share/pdk/skywater-pdk-libs-sky130_fd_pr/source"
+      ]);
 in
 stdenv.mkDerivation rec {
   pname = "open-pdks";
@@ -37,22 +75,20 @@ stdenv.mkDerivation rec {
     leaveDotGit = true; # needed at installation
   };
   
-  configureFlags = [
-    "--enable-sky130-pdk"
-    "--with-sky130-variants=${sky130-variants}"
-    "--enable-primitive-sky130=${skywater-pdk-libs-sky130_fd_pr}/share/pdk/skywater-pdk-libs-sky130_fd_pr/source"
-    "--disable-io-sky130"
-    "--disable-sc-hs-sky130"
-    "--disable-sc-ms-sky130"
-    "--disable-sc-ls-sky130"
-    "--disable-sc-lp-sky130"
-    "--enable-sc-hd-sky130=${skywater-pdk-libs-sky130_fd_sc_hd}/share/pdk/skywater-pdk-libs-sky130_fd_sc_hd/source"
-    "--disable-sc-hdll-sky130"
-    "--disable-sc-hvl-sky130"
-    "--enable-alpha-sky130=${sky130-pschulz-xx-hd}/share/pdk/sky130-pschulz-xx-hd/source"
-    "--enable-xschem-sky130=${xschem-sky130}/share/pdk/xschem-sky130/source"
-    "--enable-klayout-sky130=${sky130-klayout-pdk}/share/pdk/sky130-klayout-pdk/source"
-    "--disable-precheck-sky130"
+  configureFlags =
+    lib.concat (selectPDK pdk) [
+    (maybeEnable skywater-pdk-libs-sky130_fd_io)
+    (maybeEnable skywater-pdk-libs-sky130_fd_sc_hs)
+    (maybeEnable skywater-pdk-libs-sky130_fd_sc_ms)
+    (maybeEnable skywater-pdk-libs-sky130_fd_sc_ls)
+    (maybeEnable skywater-pdk-libs-sky130_fd_sc_lp)
+    (maybeEnable skywater-pdk-libs-sky130_fd_sc_hd)
+    (maybeEnable skywater-pdk-libs-sky130_fd_sc_hdll)
+    (maybeEnable skywater-pdk-libs-sky130_fd_sc_hvl)
+    (maybeEnable sky130-pschulz-xx-hd)
+    (maybeEnable xschem-sky130)
+    (maybeEnable sky130-klayout-pdk)
+    (maybeEnable mpw_precheck)
   ];
 
   # patches = [
