@@ -7,9 +7,9 @@
 , git
 , magic-vlsi
 , mpw_precheck ? { pname = "mpw_precheck";}
-, pdk ? "sky130"
+, pdk-code ? "sky130"
 , python3
-, sky130-variants ? "A"
+, pdk-variant ? "A"
 , sky130_sram_macros ? { pname = "sky130_sram_macros";}
 , sky130_fd_bd_sram ? { pname = "sky130_fd_bd_sram";}
 , sky130-pschulz-xx-hd ? { pname = "sky130-pschulz-xx-hd";}
@@ -61,7 +61,7 @@ let python = python3.withPackages (ps: [
       then [ "--enable-gf180mcu-pdk" ]
       else builtins.filter (s: s != "") [
         "--enable-sky130-pdk"
-        "--with-sky130-variants=${sky130-variants}"
+        "--with-sky130-variant=${pdk-variant}"
         "--enable-primitive-sky130=${skywater-pdk-libs-sky130_fd_pr}/share/pdk/skywater-pdk-libs-sky130_fd_pr/source"
         (lib.strings.optionalString ef-style "--with-ef-style")
       ]);
@@ -76,9 +76,11 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-LdwlebVdhJ50HhnMXX7/sNy2gwscY3qYXkWojVwfjwk=";
     leaveDotGit = true; # needed at installation
   };
+
+  inherit pdk-code pdk-variant;
   
   configureFlags =
-    lib.concat (selectPDK pdk) [
+    lib.concat (selectPDK pdk-code) [
       (maybeEnable skywater-pdk-libs-sky130_fd_io)
       (maybeEnable skywater-pdk-libs-sky130_fd_sc_hs)
       (maybeEnable skywater-pdk-libs-sky130_fd_sc_ms)

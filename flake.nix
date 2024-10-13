@@ -2,11 +2,11 @@
   description = "Some packages not yet available in nixpkgs";
 
   inputs = {
-    # nixpkgs.url = github:NixOS/nixpkgs/nixos-22.05;
+    nixpkgs.url = github:NixOS/nixpkgs/nixos-24.05;
     # nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
     # use the same revision as the one on my NixOS system found with
     # nixos-version --hash
-    nixpkgs.url = github:NixOS/nixpkgs/944b2aea7f0a2d7c79f72468106bc5510cbf5101;
+    # nixpkgs.url = github:NixOS/nixpkgs/944b2aea7f0a2d7c79f72468106bc5510cbf5101;
   };
 
   outputs = { self, nixpkgs }:
@@ -86,9 +86,10 @@
       });
 
       devShells = forAllSystems (system:
-        let makeShell = (drv: pdk: pkgs.${system}.mkShell {
+        let makeShell = (pdk: pkgs.${system}.mkShell {
               packages = [
-                drv
+                pdk
+                self.packages.${system}.netgen
                 pkgs.${system}.xschem
                 pkgs.${system}.ngspice
                 pkgs.${system}.xyce
@@ -99,13 +100,13 @@
                 pkgs.${system}.verilator
               ];
               shellHook = ''
-            export PDK_ROOT="${drv}/share/pdk"
-            export PDK=pdk
+            export PDK_ROOT="${pdk}/share/pdk"
+            export PDK=${nixpkgs.lib.strings.concatStrings [ pdk.pdk-code pdk.pdk-variant ]}
           '';
             });
         in rec {
-        sky130a = makeShell self.packages.${system}.sky130a "sky130A";
-        sky130a-ef = makeShell self.packages.${system}.sky130a-ef "sky130A";
+        sky130a = makeShell self.packages.${system}.sky130a;
+        sky130a-ef = makeShell self.packages.${system}.sky130a-ef;
       });
     };
 }
