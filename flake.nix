@@ -27,6 +27,8 @@
             texlive = pkgs.${system}.texlive.combine { inherit (pkgs.${system}.texlive) scheme-medium; };
           };
 
+        netgen = pkgs.${system}.callPackage ./pkgs/applications/science/electronics/netgen { };
+
         scmutils = pkgs.${system}.callPackage ./pkgs/development/modules/mit-scheme-modules/scmutils { };
 
         sky130a = pkgs.${system}.callPackage ./pkgs/development/pdk/open-pdks
