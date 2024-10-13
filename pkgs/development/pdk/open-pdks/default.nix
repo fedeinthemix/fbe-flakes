@@ -79,19 +79,19 @@ stdenv.mkDerivation rec {
   
   configureFlags =
     lib.concat (selectPDK pdk) [
-    (maybeEnable skywater-pdk-libs-sky130_fd_io)
-    (maybeEnable skywater-pdk-libs-sky130_fd_sc_hs)
-    (maybeEnable skywater-pdk-libs-sky130_fd_sc_ms)
-    (maybeEnable skywater-pdk-libs-sky130_fd_sc_ls)
-    (maybeEnable skywater-pdk-libs-sky130_fd_sc_lp)
-    (maybeEnable skywater-pdk-libs-sky130_fd_sc_hd)
-    (maybeEnable skywater-pdk-libs-sky130_fd_sc_hdll)
-    (maybeEnable skywater-pdk-libs-sky130_fd_sc_hvl)
-    (maybeEnable sky130-pschulz-xx-hd)
-    (maybeEnable xschem-sky130)
-    (maybeEnable sky130-klayout-pdk)
-    (maybeEnable mpw_precheck)
-  ];
+      (maybeEnable skywater-pdk-libs-sky130_fd_io)
+      (maybeEnable skywater-pdk-libs-sky130_fd_sc_hs)
+      (maybeEnable skywater-pdk-libs-sky130_fd_sc_ms)
+      (maybeEnable skywater-pdk-libs-sky130_fd_sc_ls)
+      (maybeEnable skywater-pdk-libs-sky130_fd_sc_lp)
+      (maybeEnable skywater-pdk-libs-sky130_fd_sc_hd)
+      (maybeEnable skywater-pdk-libs-sky130_fd_sc_hdll)
+      (maybeEnable skywater-pdk-libs-sky130_fd_sc_hvl)
+      (maybeEnable sky130-pschulz-xx-hd)
+      (maybeEnable xschem-sky130)
+      (maybeEnable sky130-klayout-pdk)
+      (maybeEnable mpw_precheck)
+    ];
 
   # patches = [
   #   ./rename_models-makeusereditable.patch

@@ -37,6 +37,16 @@
             sky130-pschulz-xx-hd
             skywater-pdk-libs-sky130_fd_io; };
 
+        sky130a-ef = pkgs.${system}.callPackage ./pkgs/development/pdk/open-pdks
+          { inherit skywater-pdk-libs-sky130_fd_pr
+            skywater-pdk-libs-sky130_fd_sc_hd
+            sky130-klayout-pdk
+            xschem-sky130
+            sky130-pschulz-xx-hd
+            skywater-pdk-libs-sky130_fd_io;
+            ef-style = true;
+          };
+
         skywater-pdk-libs-sky130_fd_pr = pkgs.${system}.callPackage
           (import ./pkgs/development/pdk/sky130/sky130-lib-gen.nix
             { repo = "skywater-pdk-libs-sky130_fd_pr";
@@ -73,24 +83,27 @@
         xschem-sky130 = pkgs.${system}.callPackage ./pkgs/development/pdk/xschem-sky130 { };
       });
 
-      devShells = forAllSystems (system: rec {
-        sky130a = pkgs.${system}.mkShell {
-          packages = [
-            self.packages.${system}.sky130a
-            pkgs.${system}.xschem
-            pkgs.${system}.ngspice
-            pkgs.${system}.xyce
-            pkgs.${system}.verilog
-            pkgs.${system}.magic-vlsi
-            pkgs.${system}.klayout
-            pkgs.${system}.gaw
-            pkgs.${system}.verilator
-          ];
-          shellHook = ''
-            export PDK_ROOT="${self.packages.${system}.sky130a}/share/pdk"
-            export PDK="sky130A"
+      devShells = forAllSystems (system:
+        let makeShell = (drv: pdk: pkgs.${system}.mkShell {
+              packages = [
+                drv
+                pkgs.${system}.xschem
+                pkgs.${system}.ngspice
+                pkgs.${system}.xyce
+                pkgs.${system}.verilog
+                pkgs.${system}.magic-vlsi
+                pkgs.${system}.klayout
+                pkgs.${system}.gaw
+                pkgs.${system}.verilator
+              ];
+              shellHook = ''
+            export PDK_ROOT="${drv}/share/pdk"
+            export PDK=pdk
           '';
-        };
+            });
+        in rec {
+        sky130a = makeShell self.packages.${system}.sky130a "sky130A";
+        sky130a-ef = makeShell self.packages.${system}.sky130a-ef "sky130A";
       });
     };
 }
