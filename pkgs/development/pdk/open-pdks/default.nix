@@ -3,6 +3,7 @@
 , fetchFromGitHub
 , fetchgit
 , bash
+, ef-style ? false
 , git
 , magic-vlsi
 , mpw_precheck ? { pname = "mpw_precheck";}
@@ -58,10 +59,11 @@ let python = python3.withPackages (ps: [
     selectPDK = (pdk:
       if pdk == "gf180mcu"
       then [ "--enable-gf180mcu-pdk" ]
-      else [
+      else builtins.filter (s: s != "") [
         "--enable-sky130-pdk"
         "--with-sky130-variants=${sky130-variants}"
         "--enable-primitive-sky130=${skywater-pdk-libs-sky130_fd_pr}/share/pdk/skywater-pdk-libs-sky130_fd_pr/source"
+        (lib.strings.optionalString ef-style "--with-ef-style")
       ]);
 in
 stdenv.mkDerivation rec {
@@ -100,7 +102,9 @@ stdenv.mkDerivation rec {
     patch -p0 < ${./sky130-rename_cells-makeuserwritable.patch}
     patch -p0 < ${./sky130-inc_verilog-makeuserwritable.patch}
     patch -p0 < ${./sky130-Makefile-in-xschem-staging-write.patch}
+    patch -p0 < ${./sky130-fix_io_lef-makeuserwritable.patch}
     patch -p0 < ${./gf180mcu-inc_verilog-makeuserwritable.patch}
+    patch -p0 < ${./foundry_install-makeuserwritable.patch}
     substituteInPlace "scripts/configure" \
       --replace-quiet "python3" "${python}/bin/python"
     # don't use 'patchShebangs' as some are in code generating strings

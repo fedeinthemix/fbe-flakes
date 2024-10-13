@@ -1,0 +1,10 @@
+--- common/foundry_install.py.orig	2024-10-13 09:02:09.463650424 +0200
++++ common/foundry_install.py	2024-10-13 09:04:21.691544271 +0200
+@@ -401,6 +401,7 @@
+         # File contents have been modified, so if this file was a symbolic
+         # link, then remove it.  Otherwise, overwrite the file with the
+         # modified contents.
++        makeuserwritable(vfile)
+         if os.path.islink(vfile):
+             os.unlink(vfile)
+         with open(vfile, 'w') as ofile:
