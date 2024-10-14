@@ -1,5 +1,5 @@
---- sky130/custom/scripts/rename_cells.py.orig	2024-10-11 09:47:46.160822603 +0200
-+++ sky130/custom/scripts/rename_cells.py	2024-10-11 09:48:52.993112992 +0200
+--- a/sky130/custom/scripts/rename_cells.py.orig	2024-10-11 09:47:46.160822603 +0200
++++ b/sky130/custom/scripts/rename_cells.py	2024-10-11 09:48:52.993112992 +0200
 @@ -14,6 +14,12 @@
  import re
  import os

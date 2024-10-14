@@ -95,18 +95,17 @@ stdenv.mkDerivation rec {
       (maybeEnable mpw_precheck)
     ];
 
-  # patches = [
-  #   ./rename_models-makeusereditable.patch
-  # ];
+  patches = [
+    ./sky130-rename_models-makeusereditable.patch
+    ./sky130-rename_cells-makeuserwritable.patch
+    ./sky130-inc_verilog-makeuserwritable.patch
+    ./sky130-Makefile-in-xschem-staging-write.patch
+    ./sky130-fix_io_lef-makeuserwritable.patch
+    ./gf180mcu-inc_verilog-makeuserwritable.patch
+    ./foundry_install-makeuserwritable.patch
+  ];
 
   postPatch = ''
-    patch -p0 < ${./sky130-rename_models-makeusereditable.patch}
-    patch -p0 < ${./sky130-rename_cells-makeuserwritable.patch}
-    patch -p0 < ${./sky130-inc_verilog-makeuserwritable.patch}
-    patch -p0 < ${./sky130-Makefile-in-xschem-staging-write.patch}
-    patch -p0 < ${./sky130-fix_io_lef-makeuserwritable.patch}
-    patch -p0 < ${./gf180mcu-inc_verilog-makeuserwritable.patch}
-    patch -p0 < ${./foundry_install-makeuserwritable.patch}
     substituteInPlace "scripts/configure" \
       --replace-quiet "python3" "${python}/bin/python"
     # don't use 'patchShebangs' as some are in code generating strings

@@ -1,5 +1,5 @@
---- sky130/custom/scripts/inc_verilog.py.orig	2024-10-11 14:30:11.449673634 +0200
-+++ sky130/custom/scripts/inc_verilog.py	2024-10-11 14:32:09.431091407 +0200
+--- a/sky130/custom/scripts/inc_verilog.py.orig	2024-10-11 14:30:11.449673634 +0200
++++ b/sky130/custom/scripts/inc_verilog.py	2024-10-11 14:32:09.431091407 +0200
 @@ -13,6 +13,12 @@
  import re
  import os

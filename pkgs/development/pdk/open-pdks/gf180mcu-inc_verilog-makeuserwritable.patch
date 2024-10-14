@@ -1,5 +1,5 @@
---- gf180mcu/custom/scripts/inc_verilog.py.orig	2024-10-11 14:40:50.489970970 +0200
-+++ gf180mcu/custom/scripts/inc_verilog.py	2024-10-11 14:41:23.924668417 +0200
+--- a/gf180mcu/custom/scripts/inc_verilog.py.orig	2024-10-11 14:40:50.489970970 +0200
++++ b/gf180mcu/custom/scripts/inc_verilog.py	2024-10-11 14:41:23.924668417 +0200
 @@ -13,6 +13,12 @@
  import re
  import os
