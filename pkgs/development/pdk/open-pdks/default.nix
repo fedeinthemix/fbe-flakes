@@ -27,7 +27,7 @@
 , skywater-pdk-libs-sky130_fd_sc_hvl
 , mpw_precheck
 , sky130_sram_macros
-, sky130_fd_bd_sram
+, skywater-pdk-libs-sky130_fd_bd_sram
 }:
 
 let python = python3.withPackages (ps: [
@@ -41,7 +41,7 @@ let python = python3.withPackages (ps: [
 
     sc-map = {
       "sky130_sram_macros" = "sram-sky130";
-      "sky130_fd_bd_sram" = "sram-space-sky130";
+      "skywater-pdk-libs-sky130_fd_bd_sram" = "sram-space-sky130";
       "skywater-pdk-libs-sky130_fd_io" = "io-sky130";
       "skywater-pdk-libs-sky130_fd_sc_hs" = "sc-hs-sky130";
       "skywater-pdk-libs-sky130_fd_sc_ms" = "sc-ms-sky130";
@@ -86,7 +86,7 @@ let python = python3.withPackages (ps: [
       skywater-pdk-libs-sky130_fd_sc_hdll
       skywater-pdk-libs-sky130_fd_sc_hvl
       sky130_sram_macros
-      sky130_fd_bd_sram
+      skywater-pdk-libs-sky130_fd_bd_sram
       mpw_precheck
     ];
 
