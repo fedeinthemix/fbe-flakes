@@ -1,5 +1,5 @@
 {
-  description = "Some packages not yet available in nixpkgs";
+  description = "FBE packages";
 
   inputs = {
     nixpkgs.url = github:NixOS/nixpkgs/nixos-24.05;
@@ -32,21 +32,44 @@
         scmutils = pkgs.${system}.callPackage ./pkgs/development/modules/mit-scheme-modules/scmutils { };
 
         sky130a = pkgs.${system}.callPackage ./pkgs/development/pdk/open-pdks
-          { inherit skywater-pdk-libs-sky130_fd_pr
-            skywater-pdk-libs-sky130_fd_sc_hd
-            sky130-klayout-pdk
-            xschem-sky130
-            sky130-pschulz-xx-hd
-            skywater-pdk-libs-sky130_fd_io; };
+          { pdk-code = "sky130";
+            pdk-variant = "A";
+            inherit skywater-pdk-libs-sky130_fd_pr
+              sky130-klayout-pdk
+              sky130-pschulz-xx-hd
+              xschem-sky130
+              skywater-pdk-libs-sky130_fd_sc_hd
+              skywater-pdk-libs-sky130_fd_io
+              skywater-pdk-libs-sky130_fd_sc_hs
+              skywater-pdk-libs-sky130_fd_sc_ms
+              skywater-pdk-libs-sky130_fd_sc_ls
+              skywater-pdk-libs-sky130_fd_sc_lp
+              skywater-pdk-libs-sky130_fd_sc_hdll
+              skywater-pdk-libs-sky130_fd_sc_hvl
+              mpw_precheck
+              sky130_sram_macros
+              sky130_fd_bd_sram;
+          };
 
         sky130a-ef = pkgs.${system}.callPackage ./pkgs/development/pdk/open-pdks
-          { inherit skywater-pdk-libs-sky130_fd_pr
-            skywater-pdk-libs-sky130_fd_sc_hd
-            sky130-klayout-pdk
-            xschem-sky130
-            sky130-pschulz-xx-hd
-            skywater-pdk-libs-sky130_fd_io;
+          { pdk-code = "sky130";
+            pdk-variant = "A";
             ef-style = true;
+            inherit skywater-pdk-libs-sky130_fd_pr
+              sky130-klayout-pdk
+              sky130-pschulz-xx-hd
+              xschem-sky130
+              skywater-pdk-libs-sky130_fd_sc_hd
+              skywater-pdk-libs-sky130_fd_io
+              skywater-pdk-libs-sky130_fd_sc_hs
+              skywater-pdk-libs-sky130_fd_sc_ms
+              skywater-pdk-libs-sky130_fd_sc_ls
+              skywater-pdk-libs-sky130_fd_sc_lp
+              skywater-pdk-libs-sky130_fd_sc_hdll
+              skywater-pdk-libs-sky130_fd_sc_hvl
+              mpw_precheck
+              sky130_sram_macros
+              sky130_fd_bd_sram;
           };
 
         skywater-pdk-libs-sky130_fd_pr = pkgs.${system}.callPackage
@@ -75,7 +98,31 @@
               version = "0.2.1-unstable-2024-10-11";
               license = nixpkgs.lib.licenses.asl20;
             }) {};
-        
+
+        skywater-pdk-libs-sky130_fd_sc_hs =
+          { pname = "skywater-pdk-libs-sky130_fd_sc_hs";};
+
+        skywater-pdk-libs-sky130_fd_sc_ms =
+          { pname = "skywater-pdk-libs-sky130_fd_sc_ms";};
+
+        skywater-pdk-libs-sky130_fd_sc_ls =
+          { pname = "skywater-pdk-libs-sky130_fd_sc_ls";};
+
+        skywater-pdk-libs-sky130_fd_sc_lp =
+          { pname = "skywater-pdk-libs-sky130_fd_sc_lp";};
+
+        skywater-pdk-libs-sky130_fd_sc_hdll =
+          { pname = "skywater-pdk-libs-sky130_fd_sc_hdll";};
+
+        skywater-pdk-libs-sky130_fd_sc_hvl =
+          { pname = "skywater-pdk-libs-sky130_fd_sc_hvl";};
+
+        mpw_precheck = { pname = "mpw_precheck";};
+
+        sky130_sram_macros = { pname = "sky130_sram_macros";};
+
+        sky130_fd_bd_sram = { pname = "sky130_fd_bd_sram";};
+
         sky130-klayout-pdk = pkgs.${system}.callPackage ./pkgs/development/pdk/sky130-klayout-pdk { };
 
         sky130-pschulz-xx-hd = pkgs.${system}.callPackage ./pkgs/development/pdk/sky130-pschulz-xx-hd { };
@@ -105,8 +152,9 @@
           '';
             });
         in rec {
-        sky130a = makeShell self.packages.${system}.sky130a;
-        sky130a-ef = makeShell self.packages.${system}.sky130a-ef;
-      });
+          inherit makeShell;
+          sky130a = makeShell self.packages.${system}.sky130a;
+          sky130a-ef = makeShell self.packages.${system}.sky130a-ef;
+        });
     };
 }

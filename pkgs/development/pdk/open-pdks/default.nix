@@ -3,29 +3,31 @@
 , fetchFromGitHub
 , fetchgit
 , bash
-, ef-style ? false
 , git
 , magic-vlsi
-, mpw_precheck ? { pname = "mpw_precheck";}
-, pdk-code ? "sky130"
 , python3
-, pdk-variant ? "A"
-, sky130_sram_macros ? { pname = "sky130_sram_macros";}
-, sky130_fd_bd_sram ? { pname = "sky130_fd_bd_sram";}
-, sky130-pschulz-xx-hd ? { pname = "sky130-pschulz-xx-hd";}
-, sky130-klayout-pdk ? { pname = "sky130-klayout-pdk";}
-, skywater-pdk-libs-sky130_fd_pr
-, skywater-pdk-libs-sky130_fd_io ? { pname = "skywater-pdk-libs-sky130_fd_io";}
-, skywater-pdk-libs-sky130_fd_sc_hs ? { pname = "skywater-pdk-libs-sky130_fd_sc_hs";}
-, skywater-pdk-libs-sky130_fd_sc_ms ? { pname = "skywater-pdk-libs-sky130_fd_sc_ms";}
-, skywater-pdk-libs-sky130_fd_sc_ls ? { pname = "skywater-pdk-libs-sky130_fd_sc_ls";}
-, skywater-pdk-libs-sky130_fd_sc_lp ? { pname = "skywater-pdk-libs-sky130_fd_sc_lp";}
-, skywater-pdk-libs-sky130_fd_sc_hd ? { pname = "skywater-pdk-libs-sky130_fd_sc_hd";}
-, skywater-pdk-libs-sky130_fd_sc_hdll ? { pname = "skywater-pdk-libs-sky130_fd_sc_hdll";}
-, skywater-pdk-libs-sky130_fd_sc_hvl ? { pname = "skywater-pdk-libs-sky130_fd_sc_hvl";}
 , tcsh
 , tk
-, xschem-sky130 ? { pname = "xschem-sky130";}
+# pdk selection
+, pdk-code
+, pdk-variant
+, ef-style ? false
+# libraries
+, sky130-klayout-pdk
+, sky130-pschulz-xx-hd
+, xschem-sky130
+, skywater-pdk-libs-sky130_fd_pr
+, skywater-pdk-libs-sky130_fd_io
+, skywater-pdk-libs-sky130_fd_sc_hd
+, skywater-pdk-libs-sky130_fd_sc_hs
+, skywater-pdk-libs-sky130_fd_sc_ms
+, skywater-pdk-libs-sky130_fd_sc_ls
+, skywater-pdk-libs-sky130_fd_sc_lp
+, skywater-pdk-libs-sky130_fd_sc_hdll
+, skywater-pdk-libs-sky130_fd_sc_hvl
+, mpw_precheck
+, sky130_sram_macros
+, sky130_fd_bd_sram
 }:
 
 let python = python3.withPackages (ps: [
@@ -36,6 +38,7 @@ let python = python3.withPackages (ps: [
       # scripts/cace.py 
       ps.matplotlib
     ]);
+
     sc-map = {
       "sky130_sram_macros" = "sram-sky130";
       "sky130_fd_bd_sram" = "sram-space-sky130";
@@ -52,47 +55,77 @@ let python = python3.withPackages (ps: [
       "sky130-klayout-pdk" = "klayout-sky130";
       "mpw_precheck" = "precheck-sky130";
     };
-    maybeEnable = (drv:
-      if (lib.isDerivation drv)
-      then "--enable-${sc-map.${drv.pname}}=${drv}/share/pdk/${drv.pname}/source"
-      else "--disable-${sc-map.${drv.pname}}");
+
+    enableLibrary = (drv:
+      "--enable-${sc-map.${drv.pname}}=${drv}/share/pdk/${drv.pname}/source");
+
+    disableLibrary = (drv:
+      "--disable-${sc-map.${drv.pname}}");
+
     selectPDK = (pdk:
       if pdk == "gf180mcu"
       then [ "--enable-gf180mcu-pdk" ]
       else builtins.filter (s: s != "") [
         "--enable-sky130-pdk"
-        "--with-sky130-variant=${pdk-variant}"
+        "--with-sky130-variants=${pdk-variant}"
         "--enable-primitive-sky130=${skywater-pdk-libs-sky130_fd_pr}/share/pdk/skywater-pdk-libs-sky130_fd_pr/source"
         (lib.strings.optionalString ef-style "--with-ef-style")
       ]);
-in
-stdenv.mkDerivation rec {
+
+    allLibraries = [
+      sky130-pschulz-xx-hd
+      sky130-klayout-pdk
+      xschem-sky130
+      skywater-pdk-libs-sky130_fd_sc_hd
+      skywater-pdk-libs-sky130_fd_io
+      skywater-pdk-libs-sky130_fd_sc_hs
+      skywater-pdk-libs-sky130_fd_sc_ms
+      skywater-pdk-libs-sky130_fd_sc_ls
+      skywater-pdk-libs-sky130_fd_sc_lp
+      skywater-pdk-libs-sky130_fd_sc_hd
+      skywater-pdk-libs-sky130_fd_sc_hdll
+      skywater-pdk-libs-sky130_fd_sc_hvl
+      sky130_sram_macros
+      sky130_fd_bd_sram
+      mpw_precheck
+    ];
+
+    selectLibraries = libs:
+      map (l: if lib.lists.elem l libs
+              then enableLibrary l
+              else disableLibrary l)
+        allLibraries;
+
+in stdenv.mkDerivation (finalAttrs: {
   pname = "open-pdks";
   version = "1.0.495";
 
-  src = fetchgit {
-    url = "https://github.com/RTimothyEdwards/open_pdks.git";
+  src = fetchFromGitHub {
+    owner = "RTimothyEdwards";
+    repo = "open_pdks";
     rev = "a918dc7c8e474a99b68c85eb3546b4ed91fe9e7b";
-    sha256 = "sha256-LdwlebVdhJ50HhnMXX7/sNy2gwscY3qYXkWojVwfjwk=";
+    hash = "sha256-LdwlebVdhJ50HhnMXX7/sNy2gwscY3qYXkWojVwfjwk=";
     leaveDotGit = true; # needed at installation
   };
 
   inherit pdk-code pdk-variant;
-  
+
+  buildInputs = [ git magic-vlsi python tcsh tk ];
+
   configureFlags =
     lib.concat (selectPDK pdk-code) [
-      (maybeEnable skywater-pdk-libs-sky130_fd_io)
-      (maybeEnable skywater-pdk-libs-sky130_fd_sc_hs)
-      (maybeEnable skywater-pdk-libs-sky130_fd_sc_ms)
-      (maybeEnable skywater-pdk-libs-sky130_fd_sc_ls)
-      (maybeEnable skywater-pdk-libs-sky130_fd_sc_lp)
-      (maybeEnable skywater-pdk-libs-sky130_fd_sc_hd)
-      (maybeEnable skywater-pdk-libs-sky130_fd_sc_hdll)
-      (maybeEnable skywater-pdk-libs-sky130_fd_sc_hvl)
-      (maybeEnable sky130-pschulz-xx-hd)
-      (maybeEnable xschem-sky130)
-      (maybeEnable sky130-klayout-pdk)
-      (maybeEnable mpw_precheck)
+      (enableLibrary sky130-pschulz-xx-hd)
+      (enableLibrary xschem-sky130)
+      (enableLibrary sky130-klayout-pdk)
+      (enableLibrary skywater-pdk-libs-sky130_fd_io)
+      (disableLibrary skywater-pdk-libs-sky130_fd_sc_hs)
+      (disableLibrary skywater-pdk-libs-sky130_fd_sc_ms)
+      (disableLibrary skywater-pdk-libs-sky130_fd_sc_ls)
+      (disableLibrary skywater-pdk-libs-sky130_fd_sc_lp)
+      (enableLibrary skywater-pdk-libs-sky130_fd_sc_hd)
+      (disableLibrary skywater-pdk-libs-sky130_fd_sc_hdll)
+      (disableLibrary skywater-pdk-libs-sky130_fd_sc_hvl)
+      (disableLibrary mpw_precheck)
     ];
 
   patches = [
@@ -143,7 +176,7 @@ stdenv.mkDerivation rec {
       substituteInPlace $fn \
         --replace-quiet "['magic'" "['${magic-vlsi}/bin/magic'"
     done
-'';
+    '';
 
   preConfigure = ''
     export PYTHON=${python}/bin/python3
@@ -156,12 +189,21 @@ stdenv.mkDerivation rec {
       --replace-quiet "; git" "; ${git}/bin/git" \
       --replace-quiet "shell magic" "shell ${magic-vlsi}/bin/magic"
   '';
-  
+
+  passthru = {
+    inherit allLibraries;
+    passthru.finalAttrs = finalAttrs;
+    withLibraries = libs:
+      finalAttrs.finalPackage.overrideAttrs (self: super: {
+        configureFlags =
+          lib.concat (selectPDK pdk-code) (selectLibraries libs);
+      }); 
+  };
+
   meta = with lib; {
     description = "PDKs for open-source tools from foundry sources";
     homepage = "https://github.com/RTimothyEdwards/open_pdks";
     maintainers = [ maintainers.fbeffa ];
     license = licenses.asl20;
   };
-
-}
+})
