@@ -21,12 +21,6 @@
 
         fasthenry-mit = pkgs.${system}.callPackage ./pkgs/applications/science/physics/fasthenry-mit { };
 
-        fasthenry = pkgs.${system}.callPackage ./pkgs/applications/science/physics/fasthenry { };
-
-        fastcap = pkgs.${system}.callPackage ./pkgs/applications/science/physics/fastcap {
-            texlive = pkgs.${system}.texlive.combine { inherit (pkgs.${system}.texlive) scheme-medium; };
-          };
-
         netgen = pkgs.${system}.callPackage ./pkgs/applications/science/electronics/netgen { };
 
         scmutils = pkgs.${system}.callPackage ./pkgs/development/modules/mit-scheme-modules/scmutils { };
