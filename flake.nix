@@ -191,24 +191,27 @@
         ############################################################
         # Google/SkyWater FOSS 130nm Production PDK -- devShells
 
-        let makeShell = (pdk: pkgs.${system}.mkShell {
-              packages = [
-                pdk
-                self.packages.${system}.netgen
-                pkgs.${system}.xschem
-                pkgs.${system}.ngspice
-                pkgs.${system}.xyce
-                pkgs.${system}.verilog
-                pkgs.${system}.magic-vlsi
-                pkgs.${system}.klayout
-                pkgs.${system}.gaw
-                pkgs.${system}.verilator
-              ];
-              shellHook = ''
-            export PDK_ROOT="${pdk}/share/pdk"
-            export PDK=${nixpkgs.lib.strings.concatStrings [ pdk.pdk-code pdk.pdk-variant ]}
-          '';
-            });
+        let makeShell = (pdk:
+              let pdk-id = nixpkgs.lib.strings.concatStrings [ pdk.pdk-code pdk.pdk-variant ];
+              in pkgs.${system}.mkShell {
+                packages = [
+                  pdk
+                  self.packages.${system}.netgen
+                  pkgs.${system}.xschem
+                  pkgs.${system}.ngspice
+                  pkgs.${system}.xyce
+                  pkgs.${system}.verilog
+                  pkgs.${system}.magic-vlsi
+                  pkgs.${system}.klayout
+                  pkgs.${system}.gaw
+                  pkgs.${system}.verilator
+                ];
+                shellHook = ''
+                 export PDK_ROOT="${pdk}/share/pdk"
+                 export PDK=${pdk-id}
+                 export KLAYOUT_PATH="$PDK_ROOT/${pdk-id}/libs.tech/klayout"
+               '';
+              });
         in rec {
           
           inherit makeShell;
