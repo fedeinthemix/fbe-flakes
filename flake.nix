@@ -72,7 +72,7 @@
           (import ./pkgs/development/pdk/sky130/sky130-lib-gen.nix
             { repo = "skywater-pdk-libs-sky130_fd_pr";
               rev = "afc63d29f811b65b9888b2133fd3348eefc92046";
-              hash = "sha256-Jr9HkSjNC07KFr8TwVeMg9MsanCBT1AJscssg5sYjVI=";
+              hash = "sha256-WWdlbdNEVStNHBNAJnHBV8ttPBuW6ps0Y10Bls2DNSo=";
               version = "0.20.1-unstable-2024-10-12";
               license = nixpkgs.lib.licenses.asl20;
             }) {};
@@ -81,7 +81,7 @@
           (import ./pkgs/development/pdk/sky130/sky130-lib-gen.nix
             { repo = "skywater-pdk-libs-sky130_fd_sc_hd";
               rev = "4dbe3954e308edb6d65a15d1683ddca6eabdc369";
-              hash = "sha256-if9h/nTfeODuqvZB6LCv1Tde0Q21xG9Qn2HIWnwnOBU=";
+              hash = "sha256-sStWMDKWPOpMK4+Xt35UqGwVaqLaOY6KkmBgu3ScVWA=";
               version = "0.0.2-unstable-2024-10-11";
               license = nixpkgs.lib.licenses.asl20;
             }) {};
@@ -90,7 +90,7 @@
           (import ./pkgs/development/pdk/sky130/sky130-lib-gen.nix
             { repo = "skywater-pdk-libs-sky130_fd_io";
               rev = "d3b662d017ce4fb5d4e3c3922ac81f744111e010";
-              hash = "sha256-Agt6l16qutGrFNx6YDh4L+9WCErTIRSjX6YtevCPKP8=";
+              hash = "sha256-OG9tDk5rE640NuRelWle7ktKy4qf7UvhOYddDoq9rKg=";
               version = "0.2.1-unstable-2024-10-11";
               license = nixpkgs.lib.licenses.asl20;
             }) {};
@@ -99,7 +99,7 @@
           (import ./pkgs/development/pdk/sky130/sky130-lib-gen.nix
             { repo = "skywater-pdk-libs-sky130_fd_sc_hs";
               rev = "9a855e97aa75f8a14be7eadc365c28d50045d5fc";
-              hash = "sha256-EGi3NSHgha00SKbDZyT+yvTrpK1isXooAkTopKwFoxE=";
+              hash = "sha256-Ah6+n8JhefUPZ85O36iyCpefYHB4LC4wJFn98u6IoSw=";
               version = "0.0.2-unstable-2024-10-15";
               license = nixpkgs.lib.licenses.asl20;
             }) {};
@@ -108,7 +108,7 @@
           (import ./pkgs/development/pdk/sky130/sky130-lib-gen.nix
             { repo = "skywater-pdk-libs-sky130_fd_sc_ms";
               rev = "26d0047c0e2dbe28fe4950f171411f6e8b3d0564";
-              hash = "sha256-uVdg0ko2UoqG54ZSlbmj3/ByPwJ5+DRoO9hxcOhtQ9w=";
+              hash = "sha256-zkokJdtbLrKn2vlsYSx+M7niYYofXjueMgP19rJc2z4=";
               version = "0.0.2-unstable-2024-10-15";
               license = nixpkgs.lib.licenses.asl20;
             }) {};
@@ -117,7 +117,7 @@
           (import ./pkgs/development/pdk/sky130/sky130-lib-gen.nix
             { repo = "skywater-pdk-libs-sky130_fd_sc_ls";
               rev = "8e7040bfc58a17386e3d900c0e3b9c9163545c4a";
-              hash = "sha256-eI7f6CZQMzoS0gMfHxrJ+p6hMsGvmj8qwTwWb7G+yQM=";
+              hash = "sha256-Iew6cVD+0E7+TETuBI+e8jY83lXdHr3zgvKcPiQL0rc=";
               version = "0.1.1-unstable-2024-10-15";
               license = nixpkgs.lib.licenses.asl20;
             }) {};
@@ -126,7 +126,7 @@
           (import ./pkgs/development/pdk/sky130/sky130-lib-gen.nix
             { repo = "skywater-pdk-libs-sky130_fd_sc_lp";
               rev = "b93a1a75fa1b864872ebb0b078f6a2dd6e318d7c";
-              hash = "sha256-86J4nospyRcg4iL1NHuijXg6za6BlvrzbGwn47A07gQ=";
+              hash = "sha256-vR7mdpwyOyMuwQiXFcKmqOhGYy21rwKE3lnXv2VZtVU=";
               version = "0.0.2-unstable-2024-10-15";
               license = nixpkgs.lib.licenses.asl20;
             }) {};
@@ -135,7 +135,7 @@
           (import ./pkgs/development/pdk/sky130/sky130-lib-gen.nix
             { repo = "skywater-pdk-libs-sky130_fd_sc_hdll";
               rev = "d48faa83ef2d8573d85384c4eb019ab78295db0b";
-              hash = "sha256-lpChgbgNpwMkmnA2e+dyvotVcoFWiy5QdXqeuvyiBqQ=";
+              hash = "sha256-KePNsYbdJKaKKk32Q2Yz8Fot33Aa+V8UUrhkitKslb4=";
               version = "0.1.1-unstable-2024-10-15";
               license = nixpkgs.lib.licenses.asl20;
             }) {};
@@ -144,7 +144,7 @@
           (import ./pkgs/development/pdk/sky130/sky130-lib-gen.nix
             { repo = "skywater-pdk-libs-sky130_fd_sc_hvl";
               rev = "5f544a6d5b9385ac563811e7a455b050eea5fb70";
-              hash = "sha256-tmn6Z4FaSNeip9mitJ5bQn3LBx3QDIAzbIK9CLY99FY=";
+              hash = "sha256-oKo6TCs4X/1RJYyoI9CLlMrJYBNW43uPH86uFkxZtkg=";
               version = "0.0.3-unstable-2024-10-15";
               license = nixpkgs.lib.licenses.asl20;
             }) {};
@@ -153,7 +153,7 @@
           (import ./pkgs/development/pdk/sky130/sky130-lib-gen.nix
             { repo = "mpw_precheck";
               rev = "0941bdc1b62b5c3f99c8683bd11199d330af2ef3";
-              hash = "sha256-IhXUO9rcxyvOBwktpfkMVn5SmX2mCz5yOdjGmQrAqRE=";
+              hash = "sha256-bvT2QLIlqnifoEUWGiuPZX23nuCIw/s6jU3IBwQzlpY=";
               version = "0-unstable-2024-10-15";
               license = nixpkgs.lib.licenses.asl20;
             }) {};
@@ -162,7 +162,7 @@
           (import ./pkgs/development/pdk/sky130/sky130-lib-gen.nix
             { repo = "sky130_sram_macros";
               rev = "7b40220ebd47b8c17d58a94abaa57f111a08987a";
-              hash = "sha256-lg9Jmfepe41zCS8M7vUo2dJmJe7vja34ZprPnXRErA8=";
+              hash = "sha256-eJFoMAD9z3M8dRMKFoW4tLu01fR19Pl1fFJ+V1lTfdQ=";
               version = "0-unstable-2024-10-15";
               license = nixpkgs.lib.licenses.asl20;
             }) {};
@@ -172,7 +172,7 @@
             { owner = "google";
               repo = "skywater-pdk-libs-sky130_fd_bd_sram";
               rev = "be33adbcf188fdeab5c061699847d9d440f7a084";
-              hash = "sha256-dxKsYU7gW6snH3Yu74Ud/+yuVguRIxLNkinqfso78D0=";
+              hash = "sha256-s5zYd7w0WJ4iecteIctfTEk7hHVr1MSsx4oO2slv1ig=";
               version = "0.0.0-unstable-2024-10-15";
               license = nixpkgs.lib.licenses.asl20;
             }) {};

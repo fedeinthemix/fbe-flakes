@@ -12,10 +12,7 @@ stdenv.mkDerivation {
   pname = repo;
   version = version;
 
-  src = fetchFromGitHub {
-    inherit owner repo rev hash;
-    leaveDotGit = true; # needed at installation
-  };
+  src = fetchFromGitHub { inherit owner repo rev hash; };
 
   dontBuild = true;
 

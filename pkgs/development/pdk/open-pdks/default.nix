@@ -1,7 +1,6 @@
 { stdenv
 , lib
 , fetchFromGitHub
-, fetchgit
 , bash
 , git
 , magic-vlsi
@@ -104,13 +103,13 @@ in stdenv.mkDerivation (finalAttrs: {
     owner = "RTimothyEdwards";
     repo = "open_pdks";
     rev = "a918dc7c8e474a99b68c85eb3546b4ed91fe9e7b";
-    hash = "sha256-LdwlebVdhJ50HhnMXX7/sNy2gwscY3qYXkWojVwfjwk=";
-    leaveDotGit = true; # needed at installation
+    hash = "sha256-P0BN5JkX+mT2imBE/XARS+twmEIuOtrlbtv1It5aGJo=";
   };
 
   inherit pdk-code pdk-variant;
 
-  buildInputs = [ git magic-vlsi python tcsh tk ];
+  nativeBuildInputs = [ git magic-vlsi python ];
+  buildInputs = [ python tcsh tk ];
 
   configureFlags =
     lib.concat (selectPDK pdk-code) [
@@ -138,10 +137,8 @@ in stdenv.mkDerivation (finalAttrs: {
     ./foundry_install-makeuserwritable.patch
   ];
 
+  # patch in code generating strings
   postPatch = ''
-    substituteInPlace "scripts/configure" \
-      --replace-quiet "python3" "${python}/bin/python"
-    # don't use 'patchShebangs' as some are in code generating strings
     for fn in "common/*.py" \
               "sky130/irsim/*.py" \
               "sky130/custom/scripts/*.py" \
@@ -164,30 +161,27 @@ in stdenv.mkDerivation (finalAttrs: {
         --replace-quiet "#!/bin/bash" "#!${bash}/bin/bash" \
         --replace-quiet "#!/bin/tcsh" "#!${tcsh}/bin/tcsh"
     done
-    for fn in "common/*.py" \
-              "sky130/irsim/*.py" \
-              "sky130/custom/scripts/*.py" \
-              "sky130/custom/scripts/seal_ring_generator/*.py" \
-              "gf180mcu/custom/scripts/*.py" \
-              "runtime/project_manager.py" \
-              "runtime/netlist_to_layout.py" \
-              "runtime/cace_launch.py" \
-              "runtime/cace_gensim.py"; do
-      substituteInPlace $fn \
-        --replace-quiet "['magic'" "['${magic-vlsi}/bin/magic'"
-    done
     '';
 
-  preConfigure = ''
-    export PYTHON=${python}/bin/python3
-    export MAGIC=${magic-vlsi}/bin/magic
-  '';
-
+  # 'sky130.json' commits register
   preBuild = ''
     substituteInPlace "sky130/Makefile" \
-      --replace-quiet "shell git" "shell ${git}/bin/git" \
-      --replace-quiet "; git" "; ${git}/bin/git" \
-      --replace-quiet "shell magic" "shell ${magic-vlsi}/bin/magic"
+      --replace-fail '$(shell cd ''${SKY130_PR_PATH} ; git rev-parse HEAD)' "${skywater-pdk-libs-sky130_fd_pr.src.rev}" \
+      --replace-fail '$(shell cd ''${SKY130_IO_PATH} ; git rev-parse HEAD)' "${skywater-pdk-libs-sky130_fd_io.src.rev}" \
+      --replace-fail '$(shell cd ''${SKY130_SC_HS_PATH} ; git rev-parse HEAD)' "${skywater-pdk-libs-sky130_fd_sc_hs.src.rev}" \
+      --replace-fail '$(shell cd ''${SKY130_SC_MS_PATH} ; git rev-parse HEAD)' "${skywater-pdk-libs-sky130_fd_sc_ms.src.rev}" \
+      --replace-fail '$(shell cd ''${SKY130_SC_LS_PATH} ; git rev-parse HEAD)' "${skywater-pdk-libs-sky130_fd_sc_ls.src.rev}" \
+      --replace-fail '$(shell cd ''${SKY130_SC_LP_PATH} ; git rev-parse HEAD)' "${skywater-pdk-libs-sky130_fd_sc_lp.src.rev}" \
+      --replace-fail '$(shell cd ''${SKY130_SC_HD_PATH} ; git rev-parse HEAD)' "${skywater-pdk-libs-sky130_fd_sc_hd.src.rev}" \
+      --replace-fail '$(shell cd ''${SKY130_SC_HDLL_PATH} ; git rev-parse HEAD)' "${skywater-pdk-libs-sky130_fd_sc_hdll.src.rev}" \
+      --replace-fail '$(shell cd ''${SKY130_SC_HVL_PATH} ; git rev-parse HEAD)' "${skywater-pdk-libs-sky130_fd_sc_hvl.src.rev}" \
+      --replace-fail '$(shell cd ''${XSCHEM_PATH} ; git rev-parse HEAD)' "${xschem-sky130.src.rev}" \
+      --replace-fail '$(shell cd ''${KLAYOUT_PATH} ; git rev-parse HEAD)' "${sky130-klayout-pdk.src.rev}" \
+      --replace-fail '$(shell cd ''${PRECHECK_PATH} ; git rev-parse HEAD)' "${mpw_precheck.src.rev}" \
+      --replace-fail '$(shell cd ''${ALPHA_PATH} ; git rev-parse HEAD)' "${sky130-pschulz-xx-hd.src.rev}" \
+      --replace-fail '$(shell cd ''${SRAM_PATH} ; git rev-parse HEAD)' "${sky130_sram_macros.src.rev}" \
+      --replace-fail '$(shell cd ''${SRAM_SPACE_PATH} ; git rev-parse HEAD)' "${skywater-pdk-libs-sky130_fd_bd_sram.src.rev}" \
+      --replace-fail '$(shell magic -dnull -noconsole --commit)' "$(basename ${magic-vlsi.src.url})"
   '';
 
   passthru = {
