@@ -216,9 +216,9 @@
           
           inherit makeShell;
 
-          sky130a = makeShell self.packages.${system}.sky130a;
+          sky130a-dev = makeShell self.packages.${system}.sky130a;
 
-          sky130a-ef = makeShell self.packages.${system}.sky130a-ef;
+          sky130a-ef-dev = makeShell self.packages.${system}.sky130a-ef;
         });
     };
 }
