@@ -202,7 +202,6 @@
                   pkgs.${system}.xyce
                   pkgs.${system}.verilog
                   pkgs.${system}.magic-vlsi
-                  pkgs.${system}.klayout
                   pkgs.${system}.gaw
                   pkgs.${system}.verilator
                 ];
