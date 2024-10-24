@@ -108,7 +108,7 @@ in stdenv.mkDerivation (finalAttrs: {
 
   inherit pdk-code pdk-variant;
 
-  nativeBuildInputs = [ git magic-vlsi python ];
+  nativeBuildInputs = [ git magic-vlsi ];
   buildInputs = [ python tcsh tk ];
 
   configureFlags =
@@ -124,7 +124,7 @@ in stdenv.mkDerivation (finalAttrs: {
       (enableLibrary skywater-pdk-libs-sky130_fd_sc_hd)
       (disableLibrary skywater-pdk-libs-sky130_fd_sc_hdll)
       (disableLibrary skywater-pdk-libs-sky130_fd_sc_hvl)
-      (disableLibrary mpw_precheck)
+      (enableLibrary mpw_precheck) # used by openlane for DRC, etc.
     ];
 
   patches = [
