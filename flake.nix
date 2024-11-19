@@ -2,7 +2,8 @@
   description = "FBE packages";
 
   inputs = {
-    nixpkgs.url = github:NixOS/nixpkgs/nixos-24.05;
+    # nixpkgs.url = github:NixOS/nixpkgs/nixos-24.05;
+    nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
     # use the same revision as the one on my NixOS system found with
     # nixos-version --hash
     # nixpkgs.url = github:NixOS/nixpkgs/944b2aea7f0a2d7c79f72468106bc5510cbf5101;
@@ -18,9 +19,14 @@
     {
       packages = forAllSystems (system: rec {
 
+        # copy from nixpkgs, but: 1) enable mpi 2) add "ICB=ON" to cmakeFlags
+        arpack = pkgs.${system}.callPackage ./pkgs/development/libraries/arpack { useMpi = true; };
+
         fasthenry-mit = pkgs.${system}.callPackage ./pkgs/applications/science/physics/fasthenry-mit { };
 
         netgen = pkgs.${system}.callPackage ./pkgs/applications/science/electronics/netgen { };
+
+        palace = pkgs.${system}.callPackage ./pkgs/applications/science/physics/palace { inherit arpack; };
 
         scmutils = pkgs.${system}.callPackage ./pkgs/development/modules/mit-scheme-modules/scmutils { };
 
