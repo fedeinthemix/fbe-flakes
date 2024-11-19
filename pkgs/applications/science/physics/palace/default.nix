@@ -86,6 +86,7 @@ in stdenv.mkDerivation (finalAttrs: {
   sourceRoot = palace_src.name;
 
   cmakeFlags = [
+    "-DPALACE_WITH_OPENMP=ON"
     "-DPALACE_BUILD_EXTERNAL_DEPS=OFF"
     "-DPALACE_WITH_ARPACK=ON"
     "-DPALACE_WITH_GSLIB=ON"
