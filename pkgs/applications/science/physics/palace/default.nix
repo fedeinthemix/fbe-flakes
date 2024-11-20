@@ -45,7 +45,7 @@ let palace_src = fetchgit {
     libceed_src = fetchgit {
       url = "https://github.com/CEED/libCEED.git";
       rev = "ef9a992f4cf09f2be4ec72f649495c67ec03f813";
-      hash = "sha256-zdlTMcnv44gO2LigsD7Z8ubjQ0KgwNGRfpNE5dYv8wo=";
+      hash = "sha256-+0xIXeDkMkW3H9nSDd3eO/Toj6iptgGidYrFuukVEJY=";
       name = "libCEED";
       leaveDotGit = true;
     };
