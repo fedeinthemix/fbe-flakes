@@ -158,6 +158,10 @@ in stdenv.mkDerivation (finalAttrs: {
 
     cp -r ../examples $out/share/${finalAttrs.pname}-${finalAttrs.version}/
 
+    # fix launch script
+    substituteInPlace $out/bin/palace \
+      --replace-fail "mpirun" "${mpi}/bin/mpirun"
+
     runHook postInstall
   '';
 
