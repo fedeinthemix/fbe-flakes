@@ -16,7 +16,7 @@
   libxsmm,
   magma,
   metis,
-  mumps,
+  mumps_par,
   mpi,
   nlohmann_json,
   parmetis,
@@ -115,7 +115,7 @@ in stdenv.mkDerivation (finalAttrs: {
     libxsmm
     magma
     metis
-    mumps
+    mumps_par
     mpi
     nlohmann_json
     parmetis
