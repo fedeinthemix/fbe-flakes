@@ -31,14 +31,19 @@ python3Packages.buildPythonPackage rec {
   ];
 
   dependencies = with python3Packages; [
-    numpy_2
+    numpy # convert to numpy_2 in due time
     typing-extensions
   ];
 
-  # # cmake builds in the 'build' dir.
+  # using 'numpy_2' causes conflicts when combining with other packages
+  preConfigure = ''
+    substituteInPlace pyproject.toml \
+      --replace-fail 'numpy >= 2.0' 'numpy'
+  '';
+
+  # cmake builds in the 'build' dir.
   postConfigure = ''
     cd ..
-    # ln -s ../pyproject.toml pyproject.toml
   '';
 
   pythonImportCheck = [
