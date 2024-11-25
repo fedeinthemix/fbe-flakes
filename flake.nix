@@ -24,6 +24,8 @@
 
         fasthenry-mit = pkgs.${system}.callPackage ./pkgs/applications/science/physics/fasthenry-mit { };
 
+        gdstk = pkgs.${system}.callPackage ./pkgs/development/libraries/gdstk { };
+
         netgen = pkgs.${system}.callPackage ./pkgs/applications/science/electronics/netgen { };
 
         palace = pkgs.${system}.callPackage ./pkgs/applications/science/physics/palace { inherit arpack; };
