@@ -39,6 +39,8 @@
 
           gdstk = pkgs.${system}.callPackage ./pkgs/development/libraries/gdstk { };
 
+          gplugins = pkgs.${system}.callPackage ./pkgs/development/libraries/gplugins { inherit gdsfactory gdstk klayout meshwell pygmsh; };
+
           kfactory = pkgs.${system}.callPackage ./pkgs/development/libraries/kfactory { inherit klayout rectangle-packer ruamel-yaml-string; };
 
           klayout = pkgs.${system}.callPackage ./pkgs/development/libraries/klayout { };
