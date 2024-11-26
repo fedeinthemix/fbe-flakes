@@ -43,6 +43,8 @@
 
           klayout = pkgs.${system}.callPackage ./pkgs/development/libraries/klayout { };
 
+          meshwell = pkgs.${system}.callPackage ./pkgs/development/libraries/meshwell { inherit gdstk; };
+
           rectpack = pkgs.${system}.callPackage ./pkgs/development/libraries/rectpack { };
 
           rectangle-packer = pkgs.${system}.callPackage ./pkgs/development/libraries/rectangle-packer { };
