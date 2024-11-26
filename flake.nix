@@ -45,6 +45,8 @@
 
           meshwell = pkgs.${system}.callPackage ./pkgs/development/libraries/meshwell { inherit gdstk; };
 
+          pygmsh = pkgs.${system}.callPackage ./pkgs/development/libraries/pygmsh { };
+
           rectpack = pkgs.${system}.callPackage ./pkgs/development/libraries/rectpack { };
 
           rectangle-packer = pkgs.${system}.callPackage ./pkgs/development/libraries/rectangle-packer { };
