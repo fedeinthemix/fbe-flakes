@@ -33,6 +33,11 @@
         scmutils = pkgs.${system}.callPackage ./pkgs/development/modules/mit-scheme-modules/scmutils { };
 
         ############################################################
+        # gdsfactory related packages
+
+        rectpack = pkgs.${system}.callPackage ./pkgs/development/libraries/rectpack { };
+        
+        ############################################################
         # Google/SkyWater FOSS 130nm Production PDK -- Packages
 
         sky130a = pkgs.${system}.callPackage ./pkgs/development/pdk/open-pdks
