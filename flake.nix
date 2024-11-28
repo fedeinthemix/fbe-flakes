@@ -39,13 +39,19 @@
 
           gdstk = pkgs.${system}.callPackage ./pkgs/development/libraries/gdstk { };
 
-          gplugins = pkgs.${system}.callPackage ./pkgs/development/libraries/gplugins { inherit gdsfactory gdstk klayout meshwell pygmsh; };
+          gplugins = pkgs.${system}.callPackage ./pkgs/development/libraries/gplugins { inherit gdsfactory gdstk klayout pygmsh; meshwell = meshwell-4-gp; };
 
           kfactory = pkgs.${system}.callPackage ./pkgs/development/libraries/kfactory { inherit klayout rectangle-packer ruamel-yaml-string; };
 
           klayout = pkgs.${system}.callPackage ./pkgs/development/libraries/klayout { };
 
           meshwell = pkgs.${system}.callPackage ./pkgs/development/libraries/meshwell { inherit gdstk; };
+
+          # version pinnen in gdsfactory.gplugins
+          meshwell-4-gp = pkgs.${system}.callPackage ./pkgs/development/libraries/meshwell {
+            inherit gdstk;
+            version = "1.0.7";
+            hash = "sha256-sL9t8Do+kdJv1HgvniOoKSbIQFKpVQRbrSpXtqBHt18="; };
 
           pygmsh = pkgs.${system}.callPackage ./pkgs/development/libraries/pygmsh { };
 

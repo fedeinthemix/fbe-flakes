@@ -2,19 +2,20 @@
   fetchFromGitHub,
   gdstk,
   python3Packages,
+  version ? "1.3.7",
+  hash ? "sha256-OUPDz/PK5eX+xFMT6MQB0eMXbAcLmuJxz/BWOOIuicg=",
 }:
 
-python3Packages.buildPythonPackage rec {
+python3Packages.buildPythonPackage {
   pname = "meshwell";
-  version = "1.3.7";
+  version = version;
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "simbilod";
     repo = "meshwell";
     rev = "v${version}";
-    # sha256 = lib.fakeSha256;
-    hash = "sha256-OUPDz/PK5eX+xFMT6MQB0eMXbAcLmuJxz/BWOOIuicg=";
+    hash = hash;
   };
 
   build-system = with python3Packages; [ flit-core ];
