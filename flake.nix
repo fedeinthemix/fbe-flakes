@@ -39,6 +39,8 @@
 
         klayout = pkgs.${system}.callPackage ./pkgs/development/libraries/klayout { };
 
+        gdsfactory = pkgs.${system}.callPackage ./pkgs/development/libraries/gdsfactory { inherit rectpack kfactory; };
+
         rectpack = pkgs.${system}.callPackage ./pkgs/development/libraries/rectpack { };
 
         ruamel-yaml-string = pkgs.${system}.callPackage ./pkgs/development/libraries/ruamel-yaml-string { };
