@@ -24,8 +24,6 @@
 
         fasthenry-mit = pkgs.${system}.callPackage ./pkgs/applications/science/physics/fasthenry-mit { };
 
-        gdstk = pkgs.${system}.callPackage ./pkgs/development/libraries/gdstk { };
-
         netgen = pkgs.${system}.callPackage ./pkgs/applications/science/electronics/netgen { };
 
         palace = pkgs.${system}.callPackage ./pkgs/applications/science/physics/palace { inherit arpack; };
@@ -35,17 +33,23 @@
         ############################################################
         # gdsfactory related packages
 
-        kfactory = pkgs.${system}.callPackage ./pkgs/development/libraries/kfactory { inherit klayout rectangle-packer ruamel-yaml-string; };
+        python3Packages = with python3Packages; {
 
-        klayout = pkgs.${system}.callPackage ./pkgs/development/libraries/klayout { };
+          gdsfactory = pkgs.${system}.callPackage ./pkgs/development/libraries/gdsfactory { inherit rectpack kfactory; };
 
-        gdsfactory = pkgs.${system}.callPackage ./pkgs/development/libraries/gdsfactory { inherit rectpack kfactory; };
+          gdstk = pkgs.${system}.callPackage ./pkgs/development/libraries/gdstk { };
 
-        rectpack = pkgs.${system}.callPackage ./pkgs/development/libraries/rectpack { };
+          kfactory = pkgs.${system}.callPackage ./pkgs/development/libraries/kfactory { inherit klayout rectangle-packer ruamel-yaml-string; };
 
-        ruamel-yaml-string = pkgs.${system}.callPackage ./pkgs/development/libraries/ruamel-yaml-string { };
+          klayout = pkgs.${system}.callPackage ./pkgs/development/libraries/klayout { };
 
-        rectangle-packer = pkgs.${system}.callPackage ./pkgs/development/libraries/rectangle-packer { };
+          rectpack = pkgs.${system}.callPackage ./pkgs/development/libraries/rectpack { };
+
+          rectangle-packer = pkgs.${system}.callPackage ./pkgs/development/libraries/rectangle-packer { };
+
+          ruamel-yaml-string = pkgs.${system}.callPackage ./pkgs/development/libraries/ruamel-yaml-string { };
+
+        };
         
         ############################################################
         # Google/SkyWater FOSS 130nm Production PDK -- Packages
