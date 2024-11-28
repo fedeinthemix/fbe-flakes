@@ -35,6 +35,8 @@
         ############################################################
         # gdsfactory related packages
 
+        klayout = pkgs.${system}.callPackage ./pkgs/development/libraries/klayout { };
+
         rectpack = pkgs.${system}.callPackage ./pkgs/development/libraries/rectpack { };
 
         ruamel-yaml-string = pkgs.${system}.callPackage ./pkgs/development/libraries/ruamel-yaml-string { };
