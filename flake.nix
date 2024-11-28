@@ -35,6 +35,8 @@
         ############################################################
         # gdsfactory related packages
 
+        kfactory = pkgs.${system}.callPackage ./pkgs/development/libraries/kfactory { inherit klayout rectangle-packer ruamel-yaml-string; };
+
         klayout = pkgs.${system}.callPackage ./pkgs/development/libraries/klayout { };
 
         rectpack = pkgs.${system}.callPackage ./pkgs/development/libraries/rectpack { };
