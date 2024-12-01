@@ -44,4 +44,4 @@ libraries create a flake in the project root similar to the following one
 ```
 The attribute `allLibraries` includes all the available libraries.
 
-The flake provides `devShell`s with the same names as the PKSs that install common tools and set the environment variables `PDK_ROOT` and `PDK` as expected by `open_pdk`s.
+The flake provides `devShell`s with the same names as the PKSs plus the suffix `-dev` that installs common tools and set the environment variables `PDK_ROOT` and `PDK` as expected by `open_pdk`s.
