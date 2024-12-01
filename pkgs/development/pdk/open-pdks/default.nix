@@ -29,13 +29,15 @@
 , skywater-pdk-libs-sky130_fd_bd_sram
 }:
 
-let python = python3.withPackages (ps: [
+let python = python3.withPackages (ps: with ps; [
+      # common/foundry_indtall.py
+      setuptools
       # scripts/create_project.py
-      ps.pyaml
+      pyaml
       # scripts/cace_design_upload.py
-      ps.requests
+      requests
       # scripts/cace.py 
-      ps.matplotlib
+      matplotlib
     ]);
 
     sc-map = {
