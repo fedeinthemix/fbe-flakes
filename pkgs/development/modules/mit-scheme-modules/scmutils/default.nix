@@ -2,13 +2,11 @@
 
 stdenv.mkDerivation rec {
   pname = "scmutils";
-  version = "20230125";
+  version = "20230902";
 
-  # source URL
-  # http://groups.csail.mit.edu/mac/users/gjs/6946/scmutils-tarballs/
   src = fetchurl {
-    url = "https://groups.csail.mit.edu/mac/users/gjs/6946/scmutils-${version}.tar.gz";
-    sha256 = "0xzy7gddxbdja66nmm9qzsnfdzni7a0p1339aabchwbldy7vlv8s"; # lib.fakeSha256;
+    url = "https://groups.csail.mit.edu/mac/users/gjs/6.5160/mechanics-system-installation/native-code/scmutils-${version}.tar.gz";
+    hash = "sha256-gzQSDnIvU4MEstJfa55UZQ5Oelx+Xj/I2qUI31Ic7Fo=";
   };
 
   nativeBuildInputs = [ makeWrapper ];
