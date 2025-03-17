@@ -3,7 +3,7 @@
   fetchgit,
   lib,
   # dependencies
-  arpack,
+  arpack-mpi,
   blas,
   cmake,
   eigen,
@@ -14,7 +14,7 @@
   lapack,
   libunwind,
   libxsmm,
-  magma,
+  # magma,
   metis,
   mumps_par,
   mpi,
@@ -45,7 +45,8 @@ let palace_src = fetchgit {
     libceed_src = fetchgit {
       url = "https://github.com/CEED/libCEED.git";
       rev = "ef9a992f4cf09f2be4ec72f649495c67ec03f813";
-      hash = "sha256-+0xIXeDkMkW3H9nSDd3eO/Toj6iptgGidYrFuukVEJY=";
+      # hash = "sha256-+0xIXeDkMkW3H9nSDd3eO/Toj6iptgGidYrFuukVEJY=";
+      hash = "sha256-Tu1913cWxATlMR7mztX2wIZ25legRqGI/0P+O4SzUKA=";
       name = "libCEED";
       leaveDotGit = true;
     };
@@ -92,7 +93,7 @@ in stdenv.mkDerivation (finalAttrs: {
     "-DPALACE_WITH_GSLIB=ON"
     "-DPALACE_WITH_MUMPS=ON"
     "-DPALACE_WITH_SUPERLU=OFF"
-    "-DPALACE_WITH_MAGMA=ON"
+    "-DPALACE_WITH_MAGMA=OFF"
     "-DPALACE_WITH_SLEPC=OFF"
     "-DPALACE_WITH_LIBXSMM=ON"
   ];
@@ -105,7 +106,7 @@ in stdenv.mkDerivation (finalAttrs: {
   ];
 
   buildInputs = [
-    arpack
+    arpack-mpi
     blas
     eigen
     fmt
@@ -113,7 +114,7 @@ in stdenv.mkDerivation (finalAttrs: {
     lapack
     libunwind
     libxsmm
-    magma
+    # magma
     metis
     mumps_par
     mpi

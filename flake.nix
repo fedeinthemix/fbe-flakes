@@ -11,7 +11,6 @@
 
   outputs = { self, nixpkgs }:
     let
-      fakehash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
       supportedSystems = [ "x86_64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       pkgs = forAllSystems (system: nixpkgs.legacyPackages.${system});
@@ -19,50 +18,14 @@
     {
       packages = forAllSystems (system: rec {
 
-        # copy from nixpkgs, but: 1) enable mpi 2) add "ICB=ON" to cmakeFlags
-        arpack = pkgs.${system}.callPackage ./pkgs/development/libraries/arpack { useMpi = true; };
-
         fasthenry-mit = pkgs.${system}.callPackage ./pkgs/applications/science/physics/fasthenry-mit { };
 
         netgen = pkgs.${system}.callPackage ./pkgs/applications/science/electronics/netgen { };
 
-        palace = pkgs.${system}.callPackage ./pkgs/applications/science/physics/palace { inherit arpack; };
+        palace = pkgs.${system}.callPackage ./pkgs/applications/science/physics/palace { };
 
         scmutils = pkgs.${system}.callPackage ./pkgs/development/modules/mit-scheme-modules/scmutils { };
 
-        ############################################################
-        # gdsfactory related packages
-
-        python3Packages = with python3Packages; {
-
-          gdsfactory = pkgs.${system}.callPackage ./pkgs/development/libraries/gdsfactory { inherit rectpack kfactory; };
-
-          gdstk = pkgs.${system}.callPackage ./pkgs/development/libraries/gdstk { };
-
-          gplugins = pkgs.${system}.callPackage ./pkgs/development/libraries/gplugins { inherit gdsfactory gdstk klayout pygmsh; meshwell = meshwell-4-gp; };
-
-          kfactory = pkgs.${system}.callPackage ./pkgs/development/libraries/kfactory { inherit klayout rectangle-packer ruamel-yaml-string; };
-
-          klayout = pkgs.${system}.callPackage ./pkgs/development/libraries/klayout { };
-
-          meshwell = pkgs.${system}.callPackage ./pkgs/development/libraries/meshwell { inherit gdstk; };
-
-          # version pinnen in gdsfactory.gplugins
-          meshwell-4-gp = pkgs.${system}.callPackage ./pkgs/development/libraries/meshwell {
-            inherit gdstk;
-            version = "1.0.7";
-            hash = "sha256-sL9t8Do+kdJv1HgvniOoKSbIQFKpVQRbrSpXtqBHt18="; };
-
-          pygmsh = pkgs.${system}.callPackage ./pkgs/development/libraries/pygmsh { };
-
-          rectpack = pkgs.${system}.callPackage ./pkgs/development/libraries/rectpack { };
-
-          rectangle-packer = pkgs.${system}.callPackage ./pkgs/development/libraries/rectangle-packer { };
-
-          ruamel-yaml-string = pkgs.${system}.callPackage ./pkgs/development/libraries/ruamel-yaml-string { };
-
-        };
-        
         ############################################################
         # Google/SkyWater FOSS 130nm Production PDK -- Packages
 
@@ -220,8 +183,6 @@
 
         sky130-pschulz-xx-hd = pkgs.${system}.callPackage ./pkgs/development/pdk/sky130-pschulz-xx-hd { };
 
-        xschem = pkgs.${system}.callPackage ./pkgs/applications/science/electronics/xschem { };
-
         xschem-sky130 = pkgs.${system}.callPackage ./pkgs/development/pdk/xschem-sky130 { };
       });
 
@@ -252,7 +213,7 @@
               });
         in rec {
           
-          inherit makeShell;
+          # inherit makeShell;
 
           sky130a-dev = makeShell self.packages.${system}.sky130a;
 
