@@ -45,8 +45,7 @@ let palace_src = fetchgit {
     libceed_src = fetchgit {
       url = "https://github.com/CEED/libCEED.git";
       rev = "ef9a992f4cf09f2be4ec72f649495c67ec03f813";
-      # hash = "sha256-+0xIXeDkMkW3H9nSDd3eO/Toj6iptgGidYrFuukVEJY=";
-      hash = "sha256-Tu1913cWxATlMR7mztX2wIZ25legRqGI/0P+O4SzUKA=";
+      hash = "sha256-+0xIXeDkMkW3H9nSDd3eO/Toj6iptgGidYrFuukVEJY=";
       name = "libCEED";
       leaveDotGit = true;
     };
@@ -127,7 +126,6 @@ in stdenv.mkDerivation (finalAttrs: {
     zlib
   ];
 
-  # patchShebangs ../${slepc_src.name}/configure
   preConfigure = ''
     for fn in ${libceed_src.name} ${mfem_src.name} ${gslib_src.name} ${catch2_src.name}; do
       chmod -R u+w ../$fn
@@ -153,7 +151,7 @@ in stdenv.mkDerivation (finalAttrs: {
       --replace-fail 'GIT_TAG        ${catch2_src.rev}' ""
   '';
 
-  # the rest is installed by cmake
+  # Most things are installed by cmake. Here we perform fixes and add examples.
   installPhase = ''
     runHook preInstall
 
