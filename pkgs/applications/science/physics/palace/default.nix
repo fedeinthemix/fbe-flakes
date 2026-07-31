@@ -1,6 +1,6 @@
 { stdenv,
   fetchFromGitHub,
-  fetchgit,
+  fetchFromGitLab,
   lib,
   # dependencies
   arpack-mpi,
@@ -27,43 +27,45 @@
   superlu,
   zlib,
 }:
-let palace_src = fetchgit {
-      url = "https://github.com/awslabs/palace.git";
+let palace_src = fetchFromGitHub {
+      owner = "awslabs";
+      repo = "palace";
       rev = "v0.13.0";
       hash = "sha256-mEdmBv+Y6lQIMYiIcy/MnQI/wX8EKZFb79kjKQrzCo0=";
       name = "palace";
     };
-
-    mfem_src = fetchgit {
-      url = "https://github.com/mfem/mfem.git";
+    mfem_src = fetchFromGitHub {
+      owner = "mfem";
+      repo = "mfem";
       # spedified in "cmake/ExternalGitTags.cmake"
       rev = "c444b17c973cc301590a6ac186fb33587b5881e6";
-      hash = "sha256-phcpXYnCUH+DWh3FDqSiVAPJw5sNBe6yocRBgfHl6xo=";
+      hash = "sha256-zt17DBttUqvzjtBAwx0l6nvsHMOd7DsJBO3ZzWGRqzc=";
       name = "mfem";
-      leaveDotGit = true;
     };
-    libceed_src = fetchgit {
-      url = "https://github.com/CEED/libCEED.git";
+    libceed_src = fetchFromGitHub {
+      owner = "CEED";
+      repo = "libCEED";
       rev = "ef9a992f4cf09f2be4ec72f649495c67ec03f813";
-      hash = "sha256-+0xIXeDkMkW3H9nSDd3eO/Toj6iptgGidYrFuukVEJY=";
+      hash = "sha256-k6fW9wTPjyCTenMFrwAru3q+BL5hjfU4Lv68FlVETt0=";
       name = "libCEED";
-      leaveDotGit = true;
     };
-    slepc_src = fetchgit {
-      url = "https://gitlab.com/slepc/slepc.git";
+    slepc_src = fetchFromGitLab {
+      owner = "slepc";
+      repo = "slepc";
       rev = "2c2766ada27519a79c9f9d9634b730afb4010d95";
       hash = "sha256-2UXswERhSHDHiA7/awMoJ+hgLQXlHBo9NYzwsa0A5Cg=";
       name = "slepc";
-      leaveDotGit = true;
     };
-    catch2_src = fetchgit {
-      url = "https://github.com/catchorg/Catch2.git";
+    catch2_src = fetchFromGitHub {
+      owner = "catchorg";
+      repo = "Catch2";
       rev = "v3.4.0";
       hash = "sha256-DqGGfNjKPW9HFJrX9arFHyNYjB61uoL6NabZatTWrr0=";
       name = "catch2";
     };
-    gslib_src = fetchgit {
-      url = "https://github.com/Nek5000/gslib.git";
+    gslib_src = fetchFromGitHub {
+      owner = "Nek5000";
+      repo = "gslib";
       rev = "dbab7c6f14ec4b3f9a6f93b25fd72a6be0651f34";
       hash = "sha256-QxueFvfaPrqOifQjPAcZ5fRrhRDVhdqVcxBw40axloM=";
       name = "gslib";
@@ -149,6 +151,11 @@ in stdenv.mkDerivation (finalAttrs: {
     substituteInPlace ./test/unit/CMakeLists.txt \
       --replace-fail 'GIT_REPOSITORY https://github.com/catchorg/Catch2.git' "SOURCE_DIR /build/${catch2_src.name}" \
       --replace-fail 'GIT_TAG        ${catch2_src.rev}' ""
+    for fn in ./cmake/External*.cmake; do
+      substituteInPlace $fn \
+        --replace-quiet "git reset --hard &&" "" \
+        --replace-quiet "git clean -fd &&" ""
+    done
   '';
 
   # Most things are installed by cmake. Here we perform fixes and add examples.
